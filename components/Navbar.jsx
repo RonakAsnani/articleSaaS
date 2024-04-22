@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
@@ -7,19 +9,28 @@ import { buttonVariants } from "./ui/button";
 //   getKindeServerSession,
 // } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
+import useGlobalStore from "@/store";
 // import UserAccountNav from "./UserAccountNav";
 // import MobileNav from "./MobileNav";
 
 const Navbar = () => {
-  // const { getUser } = getKindeServerSession();
-  // const user = getUser();
+  const user = useGlobalStore((state) => state.user);
+  const setUser = useGlobalStore((state) => state.setUser);
+  const token = Cookies.get("token");
 
+  useEffect(() => {
+    setUser(token ? jwtDecode(token).user : null);
+    // console.log(user, "nav");
+  }, []);
   return (
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
       <MaxWidthWrapper>
         <div className="flex h-14 items-center justify-between border-b border-zinc-200">
           <Link href="/" className="flex z-40 font-semibold">
-            <span>Ralts.</span>
+            <span>RaltsAI</span>
           </Link>
 
           {/* <MobileNav isAuth={!!user} /> */}
@@ -35,21 +46,41 @@ const Navbar = () => {
               >
                 Pricing
               </Link>
-              {/* <LoginLink
-                className={buttonVariants({
-                  variant: "ghost",
-                  size: "sm",
-                })}
-              >
-                Sign in
-              </LoginLink>
-              <RegisterLink
+              {user ? (
+                <Link
+                  onClick={() => {
+                    if (user) {
+                      Cookies.remove("token");
+                      setUser(null);
+                    }
+                  }}
+                  href="/authuser"
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "sm",
+                  })}
+                >
+                  Log Out
+                </Link>
+              ) : (
+                <Link
+                  className={buttonVariants({
+                    variant: "ghost",
+                    size: "sm",
+                  })}
+                  href="/authuser"
+                >
+                  Sign in
+                </Link>
+              )}
+              <Link
+                href="/dashboard"
                 className={buttonVariants({
                   size: "sm",
                 })}
               >
                 Get started <ArrowRight className="ml-1.5 h-5 w-5" />
-              </RegisterLink> */}
+              </Link>
             </>
           </div>
         </div>

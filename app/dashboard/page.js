@@ -1,12 +1,18 @@
-// import React from "react";
-// import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-// import { redirect } from "next/navigation";
+"use client";
 
-// const page = async () => {
-//   const { getUser } = getKindeServerSession();
-//   const user = await getUser();
-//   if (!user || !user.id) redirect(`/auth-callback?origin=dashboard`);
-//   return <div>{user.email}</div>;
-// };
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+import useGlobalStore from "@/store";
 
-// export default page;
+const page = () => {
+  const router = useRouter();
+  const user = useGlobalStore((state) => state.user);
+  useEffect(() => {
+    console.log(user, "dash");
+  }, [user]);
+  return <Dashboard />;
+};
+
+export default page;
