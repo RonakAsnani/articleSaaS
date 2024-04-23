@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import useGlobalStore from "@/store";
+import api from "@/lib/api";
 
 function isValidEmail(email) {
   const regex =
@@ -38,27 +39,21 @@ const AuthForm = () => {
       return;
     }
     if (isSignIn) {
-      const res = await fetch(`/api/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+      const body = JSON.stringify({
+        email: email,
+        password: password,
       });
-      const data = await res.json();
-      console.log(data, "data");
-      if (res.ok) {
+      try {
+        const res = await api.post(`/api/user/login`, body);
+        const data = res.data;
+        console.log(data, "data");
         Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
         setUser(data.token ? jwtDecode(data.token).user : null);
         toast("Logged In");
         router.push("/dashboard");
-      } else {
+      } catch (error) {
         toast("Authentication failed!");
       }
-      // router.push("/");
     } else {
       if (confirmPassword == "" || username == "") {
         toast("Please fill all the fields");
@@ -69,28 +64,17 @@ const AuthForm = () => {
         return;
       }
       try {
-        const res = await fetch(`/api/user/add`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-            username: username,
-          }),
+        body = JSON.stringify({
+          email: email,
+          password: password,
+          username: username,
         });
-        const data = await res.json();
-        console.log(data);
-        if (res.ok) {
-          Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
-          setUser(data.token ? jwtDecode(data.token).user : null);
-          toast("Acount Created");
-          router.push("/dashboard");
-        } else {
-          toast("Authentication failed!");
-          // router.push("/authuser");
-        }
+        const res = await fetch(`/api/user/add`, body);
+        const data = res.data;
+        Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
+        setUser(data.token ? jwtDecode(data.token).user : null);
+        toast("Acount Created");
+        router.push("/dashboard");
       } catch (error) {
         console.log(error);
         toast("Failed to create user");

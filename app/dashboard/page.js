@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import useGlobalStore from "@/store";
+import Dashboard from "@/components/Dashboard";
 
 const page = () => {
   const router = useRouter();

@@ -3,18 +3,11 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
-// import {
-//   LoginLink,
-//   RegisterLink,
-//   getKindeServerSession,
-// } from "@kinde-oss/kinde-auth-nextjs/server";
 import { ArrowRight } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import useGlobalStore from "@/store";
-// import UserAccountNav from "./UserAccountNav";
-// import MobileNav from "./MobileNav";
 
 const Navbar = () => {
   const user = useGlobalStore((state) => state.user);
@@ -23,7 +16,6 @@ const Navbar = () => {
 
   useEffect(() => {
     setUser(token ? jwtDecode(token).user : null);
-    // console.log(user, "nav");
   }, []);
   return (
     <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">

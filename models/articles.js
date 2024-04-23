@@ -1,6 +1,10 @@
 import { Schema, model, models } from "mongoose";
 
 const ArticleSchema = new Schema({
+  name: {
+    type: String,
+    required: [true, "URL is required"],
+  },
   url: {
     type: String,
     required: [true, "URL is required"],
@@ -12,6 +16,7 @@ const ArticleSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
+  timestamps: true,
 });
 
 const Article = models.User || model("Article", ArticleSchema);

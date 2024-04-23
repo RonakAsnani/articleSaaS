@@ -26,7 +26,9 @@ export const POST = async (req, res) => {
       { expiresIn: "24h" }
     );
     console.log(token);
-    return new Response(JSON.stringify({ token: token }), { status: 201 });
+    return new Response(JSON.stringify({ token: token, html: html }), {
+      status: 201,
+    });
   } catch (error) {
     console.log(error);
     return new Response("Failed to login", { status: 500 });
