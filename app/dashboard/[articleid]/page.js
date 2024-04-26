@@ -1,13 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "next/navigation";
 import ArticleRenderer from "@/components/ArticleRenderer";
 import ChatWrapper from "@/components/ChatWrapper";
+import useGlobalStore from "@/store";
+import api from "@/lib/api";
 
 const page = () => {
   const params = useParams();
   const { articleid } = params;
+  const setArticleData = useGlobalStore((state) => state.setArticleData);
+  const fetchArticleData = async () => {
+    console.log(articleid);
+    const res = await api.post(
+      `/api/article/getById`,
+      JSON.stringify({ id: articleid })
+    );
+    setArticleData(res.data.article);
+  };
+  useEffect(() => {
+    fetchArticleData();
+  });
   return (
     <div className="flex-1 justify-between flex flex-col h-[calc(100vh-3.5rem)]">
       <div className="mx-auto w-full max-w-8xl grow lg:flex xl:px-2">

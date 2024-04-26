@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputButton from "./InputButton";
 import Skeleton from "react-loading-skeleton";
 import useGlobalStore from "@/store";
@@ -8,31 +8,39 @@ import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Button } from "./ui/button";
+import api from "@/lib/api";
+import { toast } from "react-toastify";
 
 const Dashboard = () => {
-  const [userArticles, setUserArtciles] = useState([
-    {
-      name: "Ronak",
-      id: "1",
-      createdAt: "2023-09-08T19:59:56.564647",
-    },
-    {
-      name: "Ronak",
-      id: "2",
-      createdAt: "2023-09-08T19:59:56.564647",
-    },
-    {
-      name: "Ronak",
-      id: "3",
-      createdAt: "2023-09-08T19:59:56.564647",
-    },
-    {
-      name: "Ronak",
-      id: "4",
-      createdAt: "2023-09-08T19:59:56.564647",
-    },
-  ]);
+  const [userArticles, setUserArticles] = useState([]);
   const isLoading = useGlobalStore((state) => state.isLoading);
+  const user = useGlobalStore((state) => state.user);
+  const fetchUserArticles = async () => {
+    const res = await api.post(
+      `/api/article/getByUser`,
+      JSON.stringify({ id: user.id })
+    );
+    console.log(res.data.user);
+    setUserArticles(res.data.user.UrlIds);
+  };
+  const deleteArticle = async (articleId) => {
+    try {
+      const res = await api.post(
+        `/api/article/deleteById`,
+        JSON.stringify({ articleId: articleId, userId: user.id })
+      );
+      toast.success("Session Deleted Successfully");
+      fetchUserArticles();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to delete session");
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      fetchUserArticles();
+    }
+  }, [user]);
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-8 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
@@ -52,11 +60,11 @@ const Dashboard = () => {
             )
             .map((article) => (
               <li
-                key={article.id}
+                key={article._id}
                 className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow transition hover:shadow-lg"
               >
                 <Link
-                  href={`/dashboard/${article.id}`}
+                  href={`/dashboard/${article._id}`}
                   className="flex flex-col gap-2"
                 >
                   <div className="pt-6 px-6 flex w-full items-center justify-between space-x-6">
@@ -64,7 +72,7 @@ const Dashboard = () => {
                     <div className="flex-1 truncate">
                       <div className="flex items-center space-x-3">
                         <h3 className="truncate text-lg font-medium text-zinc-900">
-                          {article.name}
+                          {article.title}
                         </h3>
                       </div>
                     </div>
@@ -91,7 +99,10 @@ const Dashboard = () => {
                     {/* {currentlyDeletingFile === article.id ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
                     ) : ( */}
-                    <Trash className="h-4 w-4" />
+                    <Trash
+                      className="h-4 w-4"
+                      onClick={() => deleteArticle(article._id)}
+                    />
                     {/* )} */}
                   </Button>
                 </div>

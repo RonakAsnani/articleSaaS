@@ -18,10 +18,15 @@ export const POST = async (req, res) => {
     await newUser.save();
     const token = jwt.sign(
       {
-        user: newUser,
+        user: {
+          id: newUser._id,
+          username: newUser.username,
+          email: newUser.email,
+          url_id: newUser.UrlIds,
+        },
       },
       process.env.JWT_SECRET,
-      { expiresIn: "24h" }
+      { algorithm: "HS256", expiresIn: "24h" }
     );
     return new Response({ token }, { status: 201 });
     // return new Response(JSON.stringify(newUser), { status: 201 });

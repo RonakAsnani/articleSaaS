@@ -31,11 +31,11 @@ const AuthForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const authentication = async (e) => {
     if (email == "" || password == "") {
-      toast("Please fill all the fields");
+      toast.error("Please fill all the fields");
       return;
     }
     if (!isValidEmail(email)) {
-      toast("Enter a valid email");
+      toast.error("Enter a valid email");
       return;
     }
     if (isSignIn) {
@@ -46,21 +46,21 @@ const AuthForm = () => {
       try {
         const res = await api.post(`/api/user/login`, body);
         const data = res.data;
-        console.log(data, "data");
         Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
         setUser(data.token ? jwtDecode(data.token).user : null);
-        toast("Logged In");
+        console.log(jwtDecode(data.token).user);
+        toast.success("Logged In");
         router.push("/dashboard");
       } catch (error) {
-        toast("Authentication failed!");
+        toast.error("Authentication failed!");
       }
     } else {
       if (confirmPassword == "" || username == "") {
-        toast("Please fill all the fields");
+        toast.error("Please fill all the fields");
         return;
       }
       if (password != confirmPassword) {
-        toast("Password does not match");
+        toast.error("Password does not match");
         return;
       }
       try {
@@ -73,11 +73,11 @@ const AuthForm = () => {
         const data = res.data;
         Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
         setUser(data.token ? jwtDecode(data.token).user : null);
-        toast("Acount Created");
+        toast.success("Acount Created");
         router.push("/dashboard");
       } catch (error) {
         console.log(error);
-        toast("Failed to create user");
+        toast.error("Failed to create user");
       }
     }
   };
