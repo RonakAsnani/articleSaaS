@@ -10,9 +10,6 @@ const ArticleSchema = new Schema(
       type: String,
       required: [true, "URL is required"],
     },
-    chats: {
-      type: Array,
-    },
     highlightedArea: {
       type: [Schema.Types.ObjectId],
       ref: "AnalyzedText",

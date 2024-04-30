@@ -64,5 +64,11 @@ async function verifyToken(token, secret) {
 }
 
 export const config = {
-  matcher: ["/api/article/add"],
+  matcher: [
+    "/api/article/add",
+    "/api/article/deleteById",
+    "/api/article/fetchExternal",
+    "/api/article/getById",
+    "/api/article/getByUser",
+  ],
 };
