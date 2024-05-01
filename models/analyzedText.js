@@ -2,21 +2,14 @@ import { Schema, model, models } from "mongoose";
 
 const AnalyzeTextSchema = new Schema(
   {
-    textContent: {
+    text: {
       type: String,
       required: [true, "Text is required"],
     },
     xpath: {
       type: String,
     },
-    chats: {
-      type: [
-        {
-          message: String,
-          owner: String,
-        },
-      ],
-    },
+    chats: [{ type: Schema.Types.Mixed }],
   },
   { timestamps: true }
 );

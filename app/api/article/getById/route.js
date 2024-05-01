@@ -6,7 +6,7 @@ export const POST = async (req, res) => {
   const { id } = await req.json();
   try {
     await connectToDB();
-    const article = await Article.findById(id);
+    const article = await Article.findById(id).populate("highlightedArea");
     return new Response(JSON.stringify({ article }), { status: 201 });
   } catch (error) {
     console.log(error);

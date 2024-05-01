@@ -6,6 +6,7 @@ import { ChevronLeft, Loader2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { CircleEllipsis } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ChatWrapper = () => {
   const isLoadingChats = useChatStore((state) => state.isLoadingChats);
@@ -96,3 +97,48 @@ const ChatWrapper = () => {
 };
 
 export default ChatWrapper;
+
+function RightIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="m8.25 4.5 7.5 7.5-7.5 7.5"
+      />
+    </svg>
+  );
+}
+function LeftIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15.75 19.5 8.25 12l7.5-7.5"
+      />
+    </svg>
+  );
+}

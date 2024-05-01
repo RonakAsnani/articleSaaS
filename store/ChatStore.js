@@ -17,7 +17,7 @@ const useChatStore = create((set, get) => ({
   setChatData: (newChat) => set({ chatData: newChat }),
   chatStatus: "NONE",
   setChatStatus: (newStatus) => set({ chatStatus: newStatus }),
-  chatIndex: -1,
+  chatIndex: 0,
   setChatIndex: (newStatus) => set({ chatIndex: newStatus }),
 }));
 

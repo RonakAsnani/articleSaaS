@@ -12,7 +12,7 @@ const ArticleSchema = new Schema(
     },
     highlightedArea: {
       type: [Schema.Types.ObjectId],
-      ref: "AnalyzedText",
+      ref: "AnalyzeText",
     },
     creator: {
       type: Schema.Types.ObjectId,

@@ -31,6 +31,7 @@ const ChatInput = ({ isDisabled }) => {
     };
     setChatData(newChatState);
   };
+
   const addMessage = async () => {
     setIsFetchingResponse(true);
     const res = await api.post(

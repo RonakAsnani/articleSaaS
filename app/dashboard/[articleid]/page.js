@@ -7,18 +7,26 @@ import ChatWrapper from "@/components/chat/ChatWrapper";
 import useUserStore from "@/store/UserStore";
 import useArticleStore from "@/store/ArticleStore";
 import api from "@/lib/api";
+import useChatStore from "@/store/ChatStore";
 
 const page = () => {
   const params = useParams();
   const { articleid } = params;
   const setArticleData = useArticleStore((state) => state.setArticleData);
+  const setChatData = useChatStore((state) => state.setChatData);
+  const setChatStatus = useChatStore((state) => state.setChatStatus);
   const fetchArticleData = async () => {
     console.log(articleid);
     const res = await api.post(
       `/api/article/getById`,
       JSON.stringify({ id: articleid })
     );
+
     setArticleData(res.data.article);
+    setChatData(res.data.article.highlightedArea);
+    if (res.data.article.highlightedArea.length > 0) {
+      setChatStatus("");
+    }
   };
   useEffect(() => {
     fetchArticleData();

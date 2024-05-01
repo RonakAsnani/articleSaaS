@@ -7,10 +7,10 @@ import useArticleStore from "@/store/ArticleStore";
 import { Button } from "@/components/ui/button";
 import { script } from "../lib/iframescript";
 import useChatStore from "@/store/ChatStore";
+import { toast } from "react-toastify";
 const ArticleRenderer = () => {
   const [html, setHtml] = useState("");
   const [iframeUrl, setIframeUrl] = useState("");
-  const [xpathData, setXpathData] = useState("");
   const articleData = useArticleStore((state) => state.articleData);
   const chatData = useChatStore((state) => state.chatData);
   const setChatData = useChatStore((state) => state.setChatData);
@@ -18,16 +18,34 @@ const ArticleRenderer = () => {
   const setChatIndex = useChatStore((state) => state.setChatIndex);
   const chatIndex = useChatStore((state) => state.chatIndex);
 
+  const saveChat = async () => {
+    console.log(articleData, chatData[chatIndex]);
+    const submitData = {
+      chatData: chatData[chatIndex],
+      articleId: articleData._id,
+    };
+    try {
+      const res = await api.post(
+        `/api/chat/updateChats`,
+        JSON.stringify(submitData)
+      );
+      toast.success("Chats saved successfully");
+    } catch (error) {
+      toast.error("Unable to save chats");
+    }
+  };
+
   const activate = () => {
     const iframeElement = document.getElementById("myIframe");
     iframeElement.contentWindow.activateDomInspector();
     window.addEventListener("message", function (event) {
       if (event.source === iframeElement.contentWindow) {
-        var resultFromIframe = event.data.xpath;
-        setXpathData(resultFromIframe);
-        setChatData([{ text: resultFromIframe, chats: [] }, ...chatData]);
+        setChatData([
+          { id: -1, text: event.data.text, xpath: event.data.xpath, chats: [] },
+          ...chatData,
+        ]);
 
-        setChatIndex(chatIndex + 1);
+        // setChatIndex(chatIndex + 1);
         setChatStatus("");
       }
     });
@@ -68,19 +86,51 @@ const ArticleRenderer = () => {
       className="max-w-4xl mx-auto my-5 p-4 bg-white shadow-lg rounded overflow-auto"
       style={{ maxHeight: "100%", minWidth: "40%" }}
     >
-      <div className="fixed bottom-4 left-4 bg-white backdrop-blur-md rounded-full p-2 space-x-2 shadow-lg shadow-gray-900/50 w-[220px]">
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <SaveIcon className="h-5 w-5 text-gray-900" onClick={activate} />
+      <div
+        style={{ zIndex: 9999 }}
+        className="fixed bottom-4 left-5 bg-gray-300 backdrop-blur-md rounded-full p-2 space-x-2 shadow-lg shadow-gray-900/50 w-[220px]"
+      >
+        <Button
+          title="Search text"
+          className="rounded-full"
+          size="icon"
+          variant="ghost"
+        >
+          <SearchIcon className="h-5 w-5 text-gray-900" onClick={activate} />
         </Button>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <XIcon className="h-5 w-5 text-gray-900" />
-        </Button>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <ShareIcon className="h-5 w-5 text-gray-900" />
-        </Button>
-        <Button className="rounded-full" size="icon" variant="ghost">
+        <Button
+          title="Remove chats"
+          className="rounded-full"
+          size="icon"
+          variant="ghost"
+        >
           <TrashIcon className="h-5 w-5 text-gray-900" />
         </Button>
+        <Button
+          title="Save chats"
+          className="rounded-full"
+          size="icon"
+          variant="ghost"
+          onClick={saveChat}
+        >
+          <SaveIcon className="h-5 w-5 text-gray-900" />
+        </Button>
+        <Button
+          title="Previous chats"
+          className="rounded-full"
+          size="icon"
+          variant="ghost"
+        >
+          <PlusIcon className="h-5 w-5 text-gray-900" />
+        </Button>
+        {/* <Button
+          title="Next chats"
+          className="rounded-full"
+          size="icon"
+          variant="ghost"
+        >
+          <RightIcon className="h-5 w-5 text-gray-900" />
+        </Button> */}
       </div>
       <iframe
         id="myIframe"
@@ -117,7 +167,7 @@ function SaveIcon(props) {
   );
 }
 
-function ShareIcon(props) {
+function PlusIcon(props) {
   return (
     <svg
       {...props}
@@ -131,9 +181,11 @@ function ShareIcon(props) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-      <polyline points="16 6 12 2 8 6" />
-      <line x1="12" x2="12" y1="2" y2="15" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 4.5v15m7.5-7.5h-15"
+      />
     </svg>
   );
 }
@@ -158,7 +210,28 @@ function TrashIcon(props) {
     </svg>
   );
 }
-
+function SearchIcon(props) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+      />
+    </svg>
+  );
+}
 function XIcon(props) {
   return (
     <svg
