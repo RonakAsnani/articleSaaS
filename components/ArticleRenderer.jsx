@@ -2,15 +2,21 @@
 
 import React, { useEffect, useState } from "react";
 import api from "@/lib/api";
-import useGlobalStore from "@/store";
+import useArticleStore from "@/store/ArticleStore";
 
 import { Button } from "@/components/ui/button";
 import { script } from "../lib/iframescript";
+import useChatStore from "@/store/ChatStore";
 const ArticleRenderer = () => {
   const [html, setHtml] = useState("");
   const [iframeUrl, setIframeUrl] = useState("");
   const [xpathData, setXpathData] = useState("");
-  const articleData = useGlobalStore((state) => state.articleData);
+  const articleData = useArticleStore((state) => state.articleData);
+  const chatData = useChatStore((state) => state.chatData);
+  const setChatData = useChatStore((state) => state.setChatData);
+  const setChatStatus = useChatStore((state) => state.setChatStatus);
+  const setChatIndex = useChatStore((state) => state.setChatIndex);
+  const chatIndex = useChatStore((state) => state.chatIndex);
 
   const activate = () => {
     const iframeElement = document.getElementById("myIframe");
@@ -19,7 +25,10 @@ const ArticleRenderer = () => {
       if (event.source === iframeElement.contentWindow) {
         var resultFromIframe = event.data.xpath;
         setXpathData(resultFromIframe);
-        console.log(resultFromIframe);
+        setChatData([{ text: resultFromIframe, chats: [] }, ...chatData]);
+
+        setChatIndex(chatIndex + 1);
+        setChatStatus("");
       }
     });
   };

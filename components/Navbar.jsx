@@ -7,11 +7,11 @@ import { ArrowRight } from "lucide-react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import useGlobalStore from "@/store";
+import useUserStore from "@/store/UserStore";
 
 const Navbar = () => {
-  const user = useGlobalStore((state) => state.user);
-  const setUser = useGlobalStore((state) => state.setUser);
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
   const token = Cookies.get("token");
 
   useEffect(() => {

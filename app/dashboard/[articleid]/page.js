@@ -1,16 +1,17 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import ArticleRenderer from "@/components/ArticleRenderer";
-import ChatWrapper from "@/components/ChatWrapper";
-import useGlobalStore from "@/store";
+import ChatWrapper from "@/components/chat/ChatWrapper";
+import useUserStore from "@/store/UserStore";
+import useArticleStore from "@/store/ArticleStore";
 import api from "@/lib/api";
 
 const page = () => {
   const params = useParams();
   const { articleid } = params;
-  const setArticleData = useGlobalStore((state) => state.setArticleData);
+  const setArticleData = useArticleStore((state) => state.setArticleData);
   const fetchArticleData = async () => {
     console.log(articleid);
     const res = await api.post(

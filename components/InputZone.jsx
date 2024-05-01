@@ -13,7 +13,8 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import useGlobalStore from "@/store";
+import useUserStore from "@/store/UserStore";
+import useArticleStore from "@/store/ArticleStore";
 import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 
@@ -30,8 +31,8 @@ export function InputZone() {
   const router = useRouter();
   const [url, setUrl] = useState("");
   const [title, setTitle] = useState("");
-  const user = useGlobalStore((state) => state.user);
-  const setArticleData = useGlobalStore((state) => state.setArticleData);
+  const user = useUserStore((state) => state.user);
+  const setArticleData = useArticleStore((state) => state.setArticleData);
 
   const AddSession = async () => {
     if (url == "" || title == "") {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import InputButton from "./InputButton";
 import Skeleton from "react-loading-skeleton";
-import useGlobalStore from "@/store";
+import useUserStore from "@/store/UserStore";
 import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -13,8 +13,8 @@ import { toast } from "react-toastify";
 
 const Dashboard = () => {
   const [userArticles, setUserArticles] = useState([]);
-  const isLoading = useGlobalStore((state) => state.isLoading);
-  const user = useGlobalStore((state) => state.user);
+  const isLoading = useUserStore((state) => state.isLoading);
+  const user = useUserStore((state) => state.user);
   const fetchUserArticles = async () => {
     const res = await api.post(
       `/api/article/getByUser`,

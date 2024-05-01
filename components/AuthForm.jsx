@@ -12,7 +12,7 @@ import { jwtDecode } from "jwt-decode";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import useGlobalStore from "@/store";
+import useUserStore from "@/store/UserStore";
 import api from "@/lib/api";
 
 function isValidEmail(email) {
@@ -23,7 +23,7 @@ function isValidEmail(email) {
 
 const AuthForm = () => {
   const router = useRouter();
-  const setUser = useGlobalStore((state) => state.setUser);
+  const setUser = useUserStore((state) => state.setUser);
   const [isSignIn, setIsSignIn] = useState(true);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
