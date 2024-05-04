@@ -7,7 +7,7 @@ export const POST = async (req, res) => {
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
-    const prompt = message;
+    const prompt = `${message}. Answer the above question with text reference on : ${context}`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

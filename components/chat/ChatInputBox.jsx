@@ -36,27 +36,52 @@ export function ChatInputBox({ isDisabled }) {
   const addMessage = async () => {
     console.log(chatData, "dataa");
     setIsFetchingResponse(true);
+
     const res = await api.post(
       `/api/chat/getResponse`,
       JSON.stringify({ message: message, context: chatData[chatIndex].text })
     );
     addChat([message, res.data]);
+    setMessage("");
+    setIsFetchingResponse(false);
+  };
+  const addMessage2 = async (msg) => {
+    setIsFetchingResponse(true);
+
+    const res = await api.post(
+      `/api/chat/getResponse`,
+      JSON.stringify({ message: msg, context: chatData[chatIndex].text })
+    );
+    addChat([msg, res.data]);
+    setMessage("");
     setIsFetchingResponse(false);
   };
   return (
     <div className="absolute bottom-2 left-0 flex flex-col items-center justify-between w-full max-w-2xl px-4 py-3 bg-white rounded-lg shadow-md dark:bg-gray-900">
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center justify-center w-full space-x-2 overflow-x-auto no-scrollbar ml-[3]">
-          <span className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md">
-            Translate
+          <span
+            onClick={() => {
+              addMessage2("Translate the provided context to hindi");
+            }}
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md"
+          >
+            Translate to Hindi
           </span>
-          <span className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md">
+          <span
+            onClick={() => {
+              addMessage2("Summarize the provided context");
+            }}
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md"
+          >
             Summarize
           </span>
-          <span className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md">
-            Audio
-          </span>
-          <span className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md">
+          <span
+            onClick={() => {
+              addMessage2("Sentiment score of the provided context");
+            }}
+            className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 whitespace-nowrap border px-2 py-1 rounded-md"
+          >
             Sentiment Score
           </span>
         </div>

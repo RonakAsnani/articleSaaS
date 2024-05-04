@@ -44,8 +44,17 @@ const ArticleRenderer = () => {
     setChatIndex(chatIndex + 1);
   };
   const removeChats = async () => {
-    chatData[chatIndex].chats = [];
-    if (chatData[chatIndex]._id != -1) {
+    if (chatData[chatIndex]._id == -1) {
+      const newChatData = [...chatData];
+      newChatData[newChatData.length - 1] = {
+        id: -1,
+        text: "",
+        xpath: "",
+        chats: [],
+      };
+      setChatData(newChatData);
+      setXpath(newChatData.length - 1);
+    } else if (chatData[chatIndex]._id != -1) {
       try {
         await api.post(
           `/api/chat/deleteById`,
