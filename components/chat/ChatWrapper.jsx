@@ -7,6 +7,8 @@ import Link from "next/link";
 import { buttonVariants } from "../ui/button";
 import { CircleEllipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ChatInputBox } from "./ChatInputBox";
+import { PageNavigator } from "./PageNavigator";
 
 const ChatWrapper = () => {
   const isLoadingChats = useChatStore((state) => state.isLoadingChats);
@@ -24,7 +26,7 @@ const ChatWrapper = () => {
           </div>
         </div>
 
-        <ChatInput isDisabled />
+        <ChatInputBox isDisabled />
       </div>
     );
   if (chatStatus === "NONE")
@@ -39,7 +41,7 @@ const ChatWrapper = () => {
           </div>
         </div>
 
-        <ChatInput isDisabled />
+        <ChatInputBox isDisabled />
       </div>
     );
   if (chatStatus === "PROCESSING")
@@ -53,7 +55,7 @@ const ChatWrapper = () => {
           </div>
         </div>
 
-        <ChatInput isDisabled />
+        <ChatInputBox isDisabled />
       </div>
     );
 
@@ -81,17 +83,20 @@ const ChatWrapper = () => {
           </div>
         </div>
 
-        <ChatInput isDisabled />
+        <ChatInputBox isDisabled />
       </div>
     );
   return (
     <div className="relative min-h-full bg-zinc-50 flex divide-y divide-zinc-200 flex-col justify-between gap-2">
-      <div className="flex-1 justify-between flex flex-col mb-28">
+      <div
+        style={{ marginBottom: "92px" }}
+        className="flex-1 justify-between flex flex-col "
+      >
         <Messages />
         <br />
       </div>
 
-      <ChatInput />
+      <ChatInputBox />
     </div>
   );
 };

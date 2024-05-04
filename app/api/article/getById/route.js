@@ -1,6 +1,7 @@
-import { connectToDB } from "@/lib/database";
 import Article from "@/models/articles";
 import User from "@/models/user";
+import AnalyzeText from "@/models/analyzedText";
+import { connectToDB } from "@/lib/database";
 
 export const POST = async (req, res) => {
   const { id } = await req.json();
