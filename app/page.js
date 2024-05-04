@@ -4,6 +4,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
+import img1 from "../public/dashboard-preview1.jpg";
+import img2 from "../public/article-upload-preview.jpg";
 
 const Home = () => {
   return (
@@ -58,7 +60,7 @@ const Home = () => {
                 <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                   <Image
                     alt="preview"
-                    src="/dashboard-preview1.jpg"
+                    src={img1}
                     width={1364}
                     height={866}
                     quality={100}
@@ -143,7 +145,7 @@ const Home = () => {
           <div className="mt-16 flow-root sm:mt-24">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <Image
-                src="/article-upload-preview.jpg"
+                src={img2}
                 alt="uploading preview"
                 width={1419}
                 height={732}
