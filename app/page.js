@@ -30,8 +30,7 @@ const Home = () => {
             size: "lg",
             className: "mt-5",
           })}
-          href="/dashboard"
-          target="_blank"
+          href="/authuser"
         >
           Get started <ArrowRight className="ml-2 h-5 w-5" />
         </Link>
@@ -58,7 +57,7 @@ const Home = () => {
                 <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                   <Image
                     alt="preview"
-                    src={"/dashboard-preview1.svg"}
+                    src={"/dashboard-preview1.png"}
                     width={1364}
                     height={866}
                     quality={100}
@@ -104,12 +103,12 @@ const Home = () => {
                 Sign up for an account
               </span>
               <span className="mt-2 text-zinc-700">
-                Either starting out with a free plan or choose our{" "}
+                Starting out with a{" "}
                 <Link
-                  href="/pricing"
+                  href="/authuser"
                   className="text-blue-700 underline underline-offset-2"
                 >
-                  pro plan
+                  free plan
                 </Link>
                 .
               </span>
@@ -132,7 +131,7 @@ const Home = () => {
                 Start using our features
               </span>
               <span className="mt-2 text-zinc-700">
-                It&apos;s that simple. Try out Quill today - it really takes
+                It&apos;s that simple. Try out RaltsAI today - it really takes
                 less than a minute.
               </span>
             </div>
@@ -143,7 +142,7 @@ const Home = () => {
           <div className="mt-16 flow-root sm:mt-24">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <Image
-                src={"/article-upload-preview.svg"}
+                src={"/article-upload-preview.png"}
                 alt="uploading preview"
                 width={1419}
                 height={732}

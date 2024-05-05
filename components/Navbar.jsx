@@ -8,6 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import useUserStore from "@/store/UserStore";
+import MobileNav from "./MobileNav";
 
 const Navbar = () => {
   const user = useUserStore((state) => state.user);
@@ -24,8 +25,7 @@ const Navbar = () => {
           <Link href="/" className="flex z-40 font-semibold">
             <span>RaltsAI</span>
           </Link>
-
-          {/* <MobileNav isAuth={!!user} /> */}
+          <MobileNav isAuth={!!user} />
 
           <div className="hidden items-center space-x-4 sm:flex">
             <>
