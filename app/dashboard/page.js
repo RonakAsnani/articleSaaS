@@ -11,8 +11,10 @@ const page = () => {
   const router = useRouter();
   const user = useUserStore((state) => state.user);
   useEffect(() => {
-    console.log(user, "dash");
-  }, [user]);
+    if (!Cookies.get("token")) {
+      router.push("/authuser");
+    }
+  }, []);
   return <Dashboard />;
 };
 

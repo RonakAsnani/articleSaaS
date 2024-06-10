@@ -1,14 +1,16 @@
 import { connectToDB } from "@/lib/database";
 import User from "@/models/user";
+import jwt from "jsonwebtoken";
 
 export const POST = async (req, res) => {
   const { username, email, password } = await req.json();
   try {
     await connectToDB();
-    // const findUser = User.findOne({ email: email });
-    // if (findUser) {
-    //   return new Response("User already exists", { status: 201 });
-    // }
+    const findUser = await User.findOne({ email: email });
+    if (findUser) {
+      console.log("found");
+      return new Response("User already exists", { status: 400 });
+    }
     const newUser = new User({
       username: username.toLowerCase().replace(" ", ""),
       email: email,
@@ -28,10 +30,12 @@ export const POST = async (req, res) => {
       process.env.JWT_SECRET,
       { algorithm: "HS256", expiresIn: "24h" }
     );
-    return new Response({ token }, { status: 201 });
+    return new Response(JSON.stringify({ token: token }), { status: 201 });
     // return new Response(JSON.stringify(newUser), { status: 201 });
   } catch (error) {
     console.log(error);
-    return new Response("Failed to create user", { status: 500 });
+    return new Response("Failed to create user/User already exist", {
+      status: 500,
+    });
   }
 };

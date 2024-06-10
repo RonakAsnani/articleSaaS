@@ -48,7 +48,6 @@ const AuthForm = () => {
         const data = res.data;
         Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
         setUser(data.token ? jwtDecode(data.token).user : null);
-        console.log(jwtDecode(data.token).user);
         toast.success("Logged In");
         router.push("/dashboard");
       } catch (error) {
@@ -64,12 +63,13 @@ const AuthForm = () => {
         return;
       }
       try {
-        body = JSON.stringify({
+        const body = JSON.stringify({
           email: email,
           password: password,
           username: username,
         });
-        const res = await fetch(`/api/user/add`, body);
+        console.log(body);
+        const res = await api.post(`/api/user/add`, body);
         const data = res.data;
         Cookies.set("token", data.token, { expires: 1 }); // Set cookie with expiry matching JWT
         setUser(data.token ? jwtDecode(data.token).user : null);
@@ -77,7 +77,7 @@ const AuthForm = () => {
         router.push("/dashboard");
       } catch (error) {
         console.log(error);
-        toast.error("Failed to create user");
+        toast.error("Failed to create user/User already exist");
       }
     }
   };

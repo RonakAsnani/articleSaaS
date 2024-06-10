@@ -30,7 +30,6 @@ export const POST = async (req, res) => {
       process.env.JWT_SECRET,
       { algorithm: "HS256", expiresIn: "24h" }
     );
-    console.log(token);
     return new Response(JSON.stringify({ token: token }), {
       status: 201,
     });
